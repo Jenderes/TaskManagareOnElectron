@@ -1,0 +1,143 @@
+body{
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+html,body {
+    background: linear-gradient(135deg, #43c6ac 0%, #191654 100%);
+    height: 100%;
+}
+.containerRegister {
+    width: 50%;
+    color: #ffffff; 
+    height: 80%;
+    background: #191654;
+    border-radius: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.containerlogin {
+    width: 50%;
+    color: #ffffff; 
+    height: 60%;
+    background: #191654;
+    border-radius: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.alluathint {
+    width: 50%;
+    height: 50%;
+    font-size: 1.3em;   
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+}
+.alluathintReg {
+    width: 50%;
+    height: 80%;
+    font-size: 1.3em;   
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+}
+.button {
+    width: 100%;
+    height: 25%;
+    background: #1aaa67;
+    color: azure;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bolder;
+    cursor: pointer;
+}
+.buttonReg {
+    width: 100%;
+    height: 25%;
+    background: #1aaa67;
+    color: azure;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bolder;
+    cursor: pointer;
+}
+.buttonRescepeReg {
+    width: 25%;
+    height: 50%;
+    background: #1aaa67;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.buttonRescepe {
+    width: 25%;
+    height: 35%;
+    background: #1aaa67;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.buttonRescepeReg a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+}
+.buttonRescepe a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+}
+.buttonpositiom {
+    width: 70%;
+    height: 20%;
+    display: flex;
+    font-size: 1.3em;   
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    cursor: pointer;
+}
+.buttonpositiomReg {
+    width: 70%;
+    height: 10%;
+    display: flex;
+    font-size: 1.3em;   
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    cursor: pointer;
+}
+input[type=text],input[type=password]  {
+    border-radius: 20px;
+    width: 100%;
+    height: 20%;
+    font-size: 0.9em;
+    font-weight: bold;
+    padding-left: 10px;
+    outline: none;
+}
+label {
+    font-weight: bold;
+}
+.ErrorAut {
+    color: #f35360;
+    font-size: 0.7em;
+    width: 100%;
+    height: 10%;
+}
