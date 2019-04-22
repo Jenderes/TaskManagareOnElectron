@@ -1,5 +1,4 @@
 const mysql = require('mysql');
-
 document.getElementById('Auntif').addEventListener('click',function () {
   let password = document.getElementById('password');
   let login = document.getElementById('login');
@@ -16,13 +15,14 @@ document.getElementById('Auntif').addEventListener('click',function () {
     }
   });
   let sql = `SELECT * FROM client where Login = "${login.value}"`
-  connection.query(sql, (err,rows) => {
+  connection.query(sql,(err,rows,fields) => {
       if (err) throw err;
       console.log('1 record inserted');
       if (rows.length !== 0) {
-          console.log(rows);
+          console.log(rows); 
+          sumt = rows[0].Password;
           if (rows[0].Password === password.value) {
-              alert('Authentication success')
+            localStorage.setItem('MaxID',rows[0].IDClient);
               document.location.href = '../html/index.html';
           } else {
               console.log('Not correctly entered password')

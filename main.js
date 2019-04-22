@@ -11,6 +11,8 @@ function CreateWindow() {
   mainWindow = new BrowserWindow({
     width: 1000,
     height: 750,
+    minWidth: 1000,
+    minHeight:750,
   });
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'html/LoginComp.html'),
