@@ -34,6 +34,7 @@ img {
     background: linear-gradient(135deg, #43c6ac 0%, #191654 100%);
     display: flex;
     flex-direction: column;
+    background-image:url('../image/AllTask.jpg');
 }
 .InforMenu {
     display: flex;
@@ -46,7 +47,6 @@ img {
     flex-direction: column;
     height: 50%;
     width: 100%;
-
 }
 .ChooseMenu div:hover {
     background: rgb(107, 107, 107,0.2);
@@ -135,7 +135,9 @@ img {
     border-bottom: 1px solid #000;
 }
 .DopTask {
-        
+    animation-name: example;
+    animation-duration: 4s;
+    animation-delay: 2s;    
 }
 .CheckPrir {
     width: 7%;

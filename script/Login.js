@@ -1,4 +1,5 @@
 const mysql = require('mysql');
+
 document.getElementById('Auntif').addEventListener('click',function () {
   let password = document.getElementById('password');
   let login = document.getElementById('login');
@@ -7,7 +8,7 @@ document.getElementById('Auntif').addEventListener('click',function () {
     host: 'localhost',
     user: 'root',
     password: 'rosq1921',
-    database: 'databasefortask',
+    database: 'databaseforapptask',
   });
   connection.connect((err) => {
     if (err) {
