@@ -1,4 +1,11 @@
+const BrowserWindow = require('electron').remote.BrowserWindow;
+const path = require('path');
+const url = require('url');
 const mysql = require('mysql');
+const { remote } = require('electron');
+
+const { Menu, MenuItem } = remote;
+const menu = new Menu();
 // let prior = '<img src="../image/crown.svg" alt="Preoritet">'
 // let strt = `<div class="Task" id="Task"><div class="StanTask" id="StandTask"><div class="CheckPrir" id="CheckPrir">${prior||none}</div><div class="TaskText" id="taskText">${TaskText}</div><div class="TaskComp" id="TaskComp"><img src="../image/checked.svg" alt="Compl"></div><div class="TaskDel" id="TaskDel"><img src="../image/delete.svg" alt="Delete"></div><div class="OpenDop" id="OpenDop"><img src="../image/menu.svg" alt="Menu"></div></div><div class="DopTask" id="DopTask"><div class="From" id="From">From:</div><div class="NameFrom" id="NameFrom">${FromName}</div><div class="ExDate" id="ExDate">ExDate:</div><div class="DataEnd" id="DataEnd">${DataEnd}</div></div></div>`
 // let dop = `<div class="DopTask" id="DopTask"><div class="From" id="From">From:</div><div class="NameFrom" id="NameFrom">${FromName}</div><div class="ExDate" id="ExDate">ExDate:</div><div class="DataEnd" id="DataEnd">${DataEnd}</div>`;
@@ -283,7 +290,42 @@ $(document).on('click', '#TaskDel',function () {
             //     if (err) throw err;
             //     callback(rows);
             // });
-        } else if ((AllArrayTask[NumberTask][ind].CientIDOut === 1) && (AllArrayTask[NumberTask][ind].CientIDIn === 1)) {
+        } else{
+            sql = `DELETE FROM \`stacktask\` WHERE (\`TaskID\` = '${AllArrayTask[NumberTask][ind].TaskID}') and (\`CientIDIn\` = '${IDUser}') and (\`CientIDOut\` = '${AllArrayTask[NumberTask][ind].CientIDOut}')`;
+            console.log(sql);
+            // connection.query(sql, (err, rows, fields) => {
+            //     if (err) throw err;
+            //     callback(rows);
+            // });
+        }
+        if (NumberTask === 0) {
+            CreateArraysTasks();
+        } else {
+            CreatePriorTask();
+        }
+    } else if (NumberTask === 3) {
+        sql = `UPDATE \`stacktask\` SET \`OtchtTask\` = '3' WHERE (\`TaskID\` = '${AllArrayTask[NumberTask][ind].TaskID}') and (\`CientIDIn\` = '${IDUser}') and (\`CientIDOut\` = '${AllArrayTask[NumberTask][ind].CientIDOut}')`;
+        console.log(sql);
+        // connection.query(sql, (err, rows, fields) => {
+        //     if (err) throw err;
+        //     callback(rows);
+        // });
+        CreateTaskFor();
+    } else if (NumberTask === 4 ){
+        sql = `DELETE FROM \`stacktask\` WHERE (\`TaskID\` = '${AllArrayTask[NumberTask][ind].TaskID}') and (\`CientIDIn\` = '${AllArrayTask[NumberTask][ind].CientIDIn}') and (\`CientIDOut\` = '${IDUser}')`;
+        console.log(sql);
+        // connection.query(sql, (err, rows, fields) => {
+        //     if (err) throw err;
+        //     callback(rows);
+        // });
+        CreateFromTask();
+    }
+});
+$(document).on('click', '#TaskComp',function () {
+    const ind = $(this).parents('#Task').index();
+    console.log(ind);
+    if ((NumberTask === 0) || (NumberTask === 1)) {
+        if ((AllArrayTask[NumberTask][ind].CientIDOut === IDUser) && (AllArrayTask[NumberTask][ind].CientIDIn === IDUser)) {
             sql = `DELETE FROM \`stacktask\` WHERE (\`TaskID\` = '${AllArrayTask[NumberTask][ind].TaskID}') and (\`CientIDIn\` = '${IDUser}') and (\`CientIDOut\` = '${IDUser}')`;
             console.log(sql);
             // connection.query(sql, (err, rows, fields) => {
@@ -319,19 +361,23 @@ $(document).on('click', '#TaskDel',function () {
         //     callback(rows);
         // });
         CreateTaskFor();
-    } else if (NumberTask === 4 ){
-        sql = `DELETE FROM \`stacktask\` WHERE (\`TaskID\` = '${AllArrayTask[NumberTask][ind].TaskID}') and (\`CientIDIn\` = '${AllArrayTask[NumberTask][ind].CientIDIn}') and (\`CientIDOut\` = '${IDUser}')`;
-        console.log(sql);
-        // connection.query(sql, (err, rows, fields) => {
-        //     if (err) throw err;
-        //     callback(rows);
-        // });
-        CreateFromTask();
     }
-});
-$(document).on('click', '#TaskComp',function () {
     console.log('Hello');
 });
+$(document).on('click', '#NewTask',function () {
+const mainWindowThird = new BrowserWindow({
+    width: 300,
+    height: 250,
+  });
+  mainWindowThird.loadURL(
+    url.format({ 
+      pathname: path.join(__dirname, '../html/added.html'),
+      protocol: 'file',
+      slashes: true,
+    })
+  );
+});
+
 // document.getElementById('OpenDop').addEventListener('click',function() {
 //     console.log(flag);
 //     if (flag) {

@@ -1,0 +1,53 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto);
+body {
+    background: #049992b0;
+}
+img {
+    width: 30px;
+    height: 30px;
+}
+.switch label {
+  display: block;
+  width: 44px;
+  height: 16px;
+  border-radius: 10px;
+  background: rgba(189, 195, 199, 0.5);
+  vertical-align: middle;
+  position: relative;
+  cursor: pointer;
+          user-select: none;
+  transition: background 350ms ease;
+}
+.switch label:before, .switch label:after {
+  content: "";
+  display: block;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transition: all 120ms linear;
+}
+.switch label:before {
+  background: rgba(189, 195, 199, 0.07);
+  -webkit-transform: translate3d(0, -50%, 0) scale(0);
+          transform: translate3d(0, -50%, 0) scale(0);
+}
+.switch label:after {
+  background: #bdc3c7;
+  -webkit-transform: translate3d(0, -50%, 0);
+          transform: translate3d(0, -50%, 0);
+}
+.switch input:checked + label {
+  background: rgba(142, 68, 173, 0.6);
+}
+.switch input:checked + label:before {
+  background: rgba(142, 68, 173, 0.07);
+  -webkit-transform: translate3d(100%, -50%, 0) scale(1);
+          transform: translate3d(100%, -50%, 0) scale(1);
+}
+.switch input:checked + label:after {
+  background: #8e44ad;
+  -webkit-transform: translate3d(100%, -50%, 0);
+          transform: translate3d(100%, -50%, 0);
+}

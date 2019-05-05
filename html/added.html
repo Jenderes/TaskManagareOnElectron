@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Added</title>
+    <link rel="stylesheet" href="../style/added.css">
+</head>
+<body>
+    <div class="AllPArametr" id="AllParametr">
+        <div class="TaskText" id="TaskText">
+            <input type="text">
+        </div>
+        <div class="SelectParametr">
+            <div class="switch">
+                <input type="checkbox" id="switch" hidden>
+                <label for="switch"></label>
+            </div>
+        </div>
+        <div class="AddPeople">
+            <div class="InputPeople" id="InputPeople">
+                <div class="PeopleText" id="PeopleText">
+                    <input type="text">
+                </div>
+                <div class="PeopleButton" id="PeopleButton">
+
+                </div>
+            </div>
+            <div class="ListPeople" id="ListPeople">
+                <div class="Name">
+                    People:
+                </div>
+                <div class="AllListPeople">
+                    <div class="People" id="People">
+                        <div class="PeopleName" id="PeopleName">
+                            Din Potemkin
+                        </div>
+                        <div class="DeletePeople">
+                            <img src="../image/x-button.svg" alt="delete">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ContainerButton" id="ContainerButton">
+        <div class="ButtonAcept" id="ButtonAcept">
+            Accept
+        </div>
+        <div class="ButtonCencel" id="ButtonCencel">
+            Closed
+        </div>
+    </div>
+    <script>
+     window.$ = window.jQuery = require('./../script/jquery-3.3.1.min.js');
+        require('./../script/added.js');
+    </script>
+</body>
+</html>

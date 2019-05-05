@@ -177,6 +177,7 @@ img {
     height: 50%;    
     background: #ffffff;
     border-bottom: 1px solid #000;
+    border-radius: 5px;
 }
 .DopTask {
     animation-name: example;
