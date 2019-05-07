@@ -1,17 +1,81 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto);
+body,html{
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
 body {
-    background: #049992b0;
+  background: #191654;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
 }
 img {
-    width: 30px;
-    height: 30px;
+    width: 19px;
+    height: 19px;
+}
+.AllPArametr {
+  margin-top: 3%;
+  height: 90%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+.TaskText input[type = text]{
+  width: 500px;
+  padding-left: 20px;
+  font-size: 1em;
+  border-radius: 20px;
+}
+.ContainerButton {
+  margin-top: 10px;
+  height: 10%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ContainerButton div {
+  height: 30px;
+  width: 70px;
+  font-size: 1.2em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 30px;
+}
+.ButtonCencel {
+  background: #5b5c5b;
+  color: #ffffff;
+}
+.ButtonAcept {
+  margin-right: 5%;
+  background: #078f3b;
+  color: #ffffff;
+}
+.SelectParametr {
+  display: flex;
+  width: 100%;
+  margin-top: 20px;
+}
+.TaskSwitch {
+  margin-right: 10px;
+  margin-left: 10px;
+  font-size: bold;
+  font-size: 1.1em;
 }
 .switch label {
   display: block;
   width: 44px;
   height: 16px;
   border-radius: 10px;
-  background: rgba(189, 195, 199, 0.5);
+  background: rgba(255, 0, 25, 0.5);
   vertical-align: middle;
   position: relative;
   cursor: pointer;
@@ -29,25 +93,94 @@ img {
   transition: all 120ms linear;
 }
 .switch label:before {
-  background: rgba(189, 195, 199, 0.07);
-  -webkit-transform: translate3d(0, -50%, 0) scale(0);
+  background: rgba(201, 17, 35, 0.07);
           transform: translate3d(0, -50%, 0) scale(0);
 }
 .switch label:after {
-  background: #bdc3c7;
-  -webkit-transform: translate3d(0, -50%, 0);
+  background: #c91123;;
           transform: translate3d(0, -50%, 0);
 }
 .switch input:checked + label {
-  background: rgba(142, 68, 173, 0.6);
+  background: rgba(23, 224, 84, 0.6);
 }
 .switch input:checked + label:before {
-  background: rgba(142, 68, 173, 0.07);
-  -webkit-transform: translate3d(100%, -50%, 0) scale(1);
+  background: rgba(23, 224, 84, 0.07);
           transform: translate3d(100%, -50%, 0) scale(1);
 }
 .switch input:checked + label:after {
-  background: #8e44ad;
-  -webkit-transform: translate3d(100%, -50%, 0);
+  background: #17e054;
           transform: translate3d(100%, -50%, 0);
+}
+.AddPeople {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+.PeopleText {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.PeopleText input[type = text] {
+ font-size: 1.1em;
+ padding-left: 5px;
+ border-radius: 20px;
+}
+.Name {
+  font-size: 1em;
+  margin-left: 20px;
+  margin-top: 5px;
+}
+.InputPeople {
+   margin-top: 10px;
+ margin-left: 5px;
+  display: flex;
+  align-items: center;
+}
+.TextName {
+  font-size: 1.1em;
+}
+.PeopleButton {
+  cursor: pointer;
+}
+.PeopleButton img{
+  width: 30px;
+  height: 30px;
+}
+.ErroPeopleSearch {
+  font-weight: bold;
+  color: #f59494;
+  margin-left: 30px;
+}
+.AllListPeople {
+  border-top: 2px solid #0bc6ff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: auto;
+  height: 85px;
+}
+.People {
+  display: flex;
+  min-height: 30px;
+  align-items: center;
+}
+.People:nth-child(even) {
+  background: #7a797962;
+}
+.People:nth-child(odd) {
+  background: #5c595962;
+}
+.PeopleName {
+  margin-right: 4%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.DeletePeople {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

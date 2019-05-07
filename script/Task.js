@@ -366,8 +366,13 @@ $(document).on('click', '#TaskComp',function () {
 });
 $(document).on('click', '#NewTask',function () {
 const mainWindowThird = new BrowserWindow({
-    width: 300,
-    height: 250,
+    width: 550,
+    height: 300,
+    // minHeight:300,
+    // maxHeight:300,
+    // minWidth:550,
+    // maxWidth:550,
+    // frame: false,
   });
   mainWindowThird.loadURL(
     url.format({ 

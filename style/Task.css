@@ -99,6 +99,7 @@ img {
     background: rgb(65, 66, 66,0.6);
 }
 .NewTask {
+margin-top: 10%;
  width: 10%;
  height: 40%;
  cursor: pointer;
@@ -108,8 +109,9 @@ img {
     height: 100%;
 }
 .Refr {
+    margin-top: 10%;
     width: 10%;
-    height: 35%;
+    height: 40%;
     cursor: pointer;
 }
 .Refr img {
