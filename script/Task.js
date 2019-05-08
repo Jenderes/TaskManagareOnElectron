@@ -6,9 +6,7 @@ const { remote } = require('electron');
 
 const { Menu, MenuItem } = remote;
 const menu = new Menu();
-// let prior = '<img src="../image/crown.svg" alt="Preoritet">'
-// let strt = `<div class="Task" id="Task"><div class="StanTask" id="StandTask"><div class="CheckPrir" id="CheckPrir">${prior||none}</div><div class="TaskText" id="taskText">${TaskText}</div><div class="TaskComp" id="TaskComp"><img src="../image/checked.svg" alt="Compl"></div><div class="TaskDel" id="TaskDel"><img src="../image/delete.svg" alt="Delete"></div><div class="OpenDop" id="OpenDop"><img src="../image/menu.svg" alt="Menu"></div></div><div class="DopTask" id="DopTask"><div class="From" id="From">From:</div><div class="NameFrom" id="NameFrom">${FromName}</div><div class="ExDate" id="ExDate">ExDate:</div><div class="DataEnd" id="DataEnd">${DataEnd}</div></div></div>`
-// let dop = `<div class="DopTask" id="DopTask"><div class="From" id="From">From:</div><div class="NameFrom" id="NameFrom">${FromName}</div><div class="ExDate" id="ExDate">ExDate:</div><div class="DataEnd" id="DataEnd">${DataEnd}</div>`;
+
 let ArrayPriorTask = [];
 let ArrayAllTask = [];
 let ArrayFromTask = [];
@@ -17,6 +15,7 @@ let ArrayForTask = [];
 let Name = [];
 let NumberTask = 0;
 let AllArrayTask = [];
+let ArrayImgStatus = ['../image/crown.svg','../image/crown.svg','../image/correct.svg','../image/x-button.svg','../image/hourglass.svg']
 let IDUser = parseInt(localStorage.getItem('MaxID'));
 function NowDate(){
     let date = new Date();
@@ -61,7 +60,7 @@ function getAllTask(callback) {
         if (err) throw err;
 
       });
-      let sql = `SELECT t.TaskID,TaskText ,CientIDIn,CientIDOut, c.FirstName, c.LastName, DataStart,DataEnd, ImportntTask, OtchtTask FROM stacktask s, task t, client c where s.TaskID = t.TaskID and c.IDClient = s.CientIDOut and (CientIDIn = '${localStorage.getItem('MaxID')}' OR CientIDOut = '${localStorage.getItem('MaxID')}')`;
+      let sql = `SELECT t.TaskID,TaskText ,CientIDIn,CientIDOut, c.FirstName, c.LastName, DataStart,DataEnd, ImportntTask,OtchtTask FROM stacktask s, task t, client c where s.TaskID = t.TaskID and c.IDClient = s.CientIDOut and (CientIDIn = '${localStorage.getItem('MaxID')}' OR CientIDOut = '${localStorage.getItem('MaxID')}')`;
       connection.query(sql, (err, rows, fields) => {
           if (err) throw err;
           callback(rows);
@@ -123,33 +122,38 @@ function CreateArraysTasks(){
     })
     getAllTask( (rows) => {
         rows.forEach((row) => {
+            if (((row.CientIDOut != 1) && (row.OtchtTask == 1))||(row.CientIDIn != 1)||((row.CientIDOut == 1) && (row.CientIDIn == 1))) {
             ArrayAllTask.push(row);
-            if((row.CientIDOut == IDUser) && (row.CientIDIn !== IDUser)) {
-                if (row.ImportntTask === 1) {
-                    Html += `<div class="Task" id="Task"><div class="StanTask" id="StandTask"><div class="CheckPrir" id="CheckPrir"><img src="../image/crown.svg" alt="Preoritet"></div><div class="TaskTextFrom" id="taskText" data-title = "${row.TaskText}">${row.TaskText}</div><div class="TaskDelFrom" id="TaskDel"><img src="../image/delete.svg" alt="Delete"></div><div class="OpenDop" id="OpenDop"><img src="../image/menu.svg" alt="Menu"></div></div><div class="DopTask" id="DopTask"></div></div>`;
+            if((row.CientIDOut == IDUser) && (row.CientIDIn != IDUser)) {
+                if (row.OtchtTask === 1) {
+                    if (row.ImportntTask === 1) {
+                        Html += `<div class="Task" id="Task"><div class="StanTask" id="StandTask"><div class="CheckPrir" id="CheckPrir"><img src="${ArrayImgStatus[row.OtchtTask]}" alt="Preoritet"></div><div class="TaskTextFrom" id="taskText" data-title = "${row.TaskText}">${row.TaskText}</div><div class="TaskDelFrom" id="TaskDel"><img src="../image/delete.svg" alt="Delete"></div><div class="OpenDop" id="OpenDop"><img src="../image/menu.svg" alt="Menu"></div></div><div class="DopTask" id="DopTask"></div></div>`;
+                    } else {
+                        Html += `<div class="Task" id="Task"><div class="StanTask" id="StandTask"><div class="CheckPrir" id="CheckPrir"></div><div class="TaskTextFrom" id="taskText" data-title = "${row.TaskText}">${row.TaskText}</div><div class="TaskDelFrom" id="TaskDel"><img src="../image/delete.svg" alt="Delete"></div><div class="OpenDop" id="OpenDop"><img src="../image/menu.svg" alt="Menu"></div></div><div class="DopTask" id="DopTask"></div></div>`;
+                    }
                 } else {
-                    Html += `<div class="Task" id="Task"><div class="StanTask" id="StandTask"><div class="CheckPrir" id="CheckPrir"></div><div class="TaskTextFrom" id="taskText" data-title = "${row.TaskText}">${row.TaskText}</div><div class="TaskDelFrom" id="TaskDel"><img src="../image/delete.svg" alt="Delete"></div><div class="OpenDop" id="OpenDop"><img src="../image/menu.svg" alt="Menu"></div></div><div class="DopTask" id="DopTask"></div></div>`;
-                }
+                    Html += `<div class="Task" id="Task"><div class="StanTask" id="StandTask"><div class="CheckPrir" id="CheckPrir"><img src="${ArrayImgStatus[row.OtchtTask]}" alt="Preoritet"></div><div class="TaskTextFrom" id="taskText" data-title = "${row.TaskText}">${row.TaskText}</div><div class="TaskDelFrom" id="TaskDel"><img src="../image/delete.svg" alt="Delete"></div><div class="OpenDop" id="OpenDop"><img src="../image/menu.svg" alt="Menu"></div></div><div class="DopTask" id="DopTask"></div></div>`}
             } else if ((row.CientIDOut === IDUser) && (row.CientIDIn === IDUser)){
                 if (row.ImportntTask === 1) {
-                    Html += `<div class="Task" id="Task"><div class="StanTask" id="StandTask"><div class="CheckPrir" id="CheckPrir"><img src="../image/crown.svg" alt="Preoritet"></div><div class="TaskTextFrom" id="taskText" data-title = '${row.TaskText}'>${row.TaskText}</div><div class="TaskCompMy" id="TaskComp"><img src="../image/checked.svg" alt="Compl"></div><div class="OpenDop" id="OpenDop"><img src="../image/menu.svg" alt="Menu"></div></div><div class="DopTask" id="DopTask"></div></div>`;
+                    Html += `<div class="Task" id="Task"><div class="StanTask" id="StandTask"><div class="CheckPrir" id="CheckPrir"><img src="${ArrayImgStatus[row.OtchtTask]}" alt="Preoritet"></div><div class="TaskTextFrom" id="taskText" data-title = '${row.TaskText}'>${row.TaskText}</div><div class="TaskCompMy" id="TaskComp"><img src="../image/checked.svg" alt="Compl"></div><div class="OpenDop" id="OpenDop"><img src="../image/menu.svg" alt="Menu"></div></div><div class="DopTask" id="DopTask"></div></div>`;
                 } else {
                     Html += `<div class="Task" id="Task"><div class="StanTask" id="StandTask"><div class="CheckPrir" id="CheckPrir"></div><div class="TaskTextFrom" id="taskText" data-title = '${row.TaskText}'>${row.TaskText}</div><div class="TaskCompMy" id="TaskComp"><img src="../image/checked.svg" alt="Compl"></div><div class="OpenDop" id="OpenDop"><img src="../image/menu.svg" alt="Menu"></div></div><div class="DopTask" id="DopTask"></div></div>`;
                 } 
             }
                 else {
                     if (row.ImportntTask === 1) {
-                        Html += `<div class="Task" id="Task"><div class="StanTask" id="StandTask"><div class="CheckPrir" id="CheckPrir"><img src="../image/crown.svg" alt="Preoritet"></div><div class="TaskText" id="taskText" data-title = "${row.TaskText}">${row.TaskText}</div><div class="TaskComp" id="TaskComp"><img src="../image/checked.svg" alt="Compl"></div><div class="TaskDel" id="TaskDel"><img src="../image/delete.svg" alt="Delete"></div><div class="OpenDop" id="OpenDop"><img src="../image/menu.svg" alt="Menu"></div></div><div class="DopTask" id="DopTask"></div></div>`;
+                        Html += `<div class="Task" id="Task"><div class="StanTask" id="StandTask"><div class="CheckPrir" id="CheckPrir"><img src="${ArrayImgStatus[row.OtchtTask]}" alt="Preoritet"></div><div class="TaskText" id="taskText" data-title = "${row.TaskText}">${row.TaskText}</div><div class="TaskComp" id="TaskComp"><img src="../image/checked.svg" alt="Compl"></div><div class="TaskDel" id="TaskDel"><img src="../image/delete.svg" alt="Delete"></div><div class="OpenDop" id="OpenDop"><img src="../image/menu.svg" alt="Menu"></div></div><div class="DopTask" id="DopTask"></div></div>`;
                     } else {
                         Html += `<div class="Task" id="Task"><div class="StanTask" id="StandTask"><div class="CheckPrir" id="CheckPrir"></div><div class="TaskText" id="taskText" data-title = "${row.TaskText}">${row.TaskText}</div><div class="TaskComp" id="TaskComp"><img src="../image/checked.svg" alt="Compl"></div><div class="TaskDel" id="TaskDel"><img src="../image/delete.svg" alt="Delete"></div><div class="OpenDop" id="OpenDop"><img src="../image/menu.svg" alt="Menu"></div></div><div class="DopTask" id="DopTask"></div></div>`;
                     }
                 }
-            if (row.ImportntTask === 1) {
+            if (row.ImportntTask === 1 && row.OtchtTask === 1) {
                 ArrayPriorTask.push(row);
             }
             if (row.CientIDOut !== parseInt(localStorage.getItem('MaxID'))) {
                 ArrayForTask.push(row);
             }
+        }
         });
     })
     GetName( (rows) => {
@@ -184,7 +188,7 @@ function CreateMyTask(){
     let HtmlTask = '';
     ArrayMyTask.forEach((row) => {
             if (row.ImportntTask === 1) {
-                HtmlTask += `<div class="Task" id="Task"><div class="StanTask" id="StandTask"><div class="CheckPrir" id="CheckPrir"><img src="../image/crown.svg" alt="Preoritet"></div><div class="TaskTextFrom" id="taskText" data-title = '${row.TaskText}'>${row.TaskText}</div><div class="TaskCompMy" id="TaskComp"><img src="../image/checked.svg" alt="Compl"></div><div class="OpenDop" id="OpenDop"><img src="../image/menu.svg" alt="Menu"></div></div><div class="DopTask" id="DopTask"></div></div>`;
+                HtmlTask += `<div class="Task" id="Task"><div class="StanTask" id="StandTask"><div class="CheckPrir" id="CheckPrir"><img src="${ArrayImgStatus[row.OtchtTask]}" alt="Preoritet"></div><div class="TaskTextFrom" id="taskText" data-title = '${row.TaskText}'>${row.TaskText}</div><div class="TaskCompMy" id="TaskComp"><img src="../image/checked.svg" alt="Compl"></div><div class="OpenDop" id="OpenDop"><img src="../image/menu.svg" alt="Menu"></div></div><div class="DopTask" id="DopTask"></div></div>`;
             } else {
                 HtmlTask += `<div class="Task" id="Task"><div class="StanTask" id="StandTask"><div class="CheckPrir" id="CheckPrir"></div><div class="TaskTextFrom" id="taskText" data-title = '${row.TaskText}'>${row.TaskText}</div><div class="TaskCompMy" id="TaskComp"><img src="../image/checked.svg" alt="Compl"></div><div class="OpenDop" id="OpenDop"><img src="../image/menu.svg" alt="Menu"></div></div><div class="DopTask" id="DopTask"></div></div>`;
             }   
@@ -195,7 +199,7 @@ function CreateTaskFor(){
     let HtmlTask = '';
     ArrayForTask.forEach((row) => {
             if (row.ImportntTask === 1) {
-                HtmlTask += `<div class="Task" id="Task"><div class="StanTask" id="StandTask"><div class="CheckPrir" id="CheckPrir"><img src="../image/crown.svg" alt="Preoritet"></div><div class="TaskText" id="taskText" data-title = '${row.TaskText}'>${row.TaskText}</div><div class="TaskComp" id="TaskComp"><img src="../image/checked.svg" alt="Compl"></div><div class="TaskDel" id="TaskDel"><img src="../image/delete.svg" alt="Delete"></div><div class="OpenDop" id="OpenDop"><img src="../image/menu.svg" alt="Menu"></div></div><div class="DopTask" id="DopTask"></div></div>`;
+                HtmlTask += `<div class="Task" id="Task"><div class="StanTask" id="StandTask"><div class="CheckPrir" id="CheckPrir"><img src="${ArrayImgStatus[row.OtchtTask]}" alt="Preoritet"></div><div class="TaskText" id="taskText" data-title = '${row.TaskText}'>${row.TaskText}</div><div class="TaskComp" id="TaskComp"><img src="../image/checked.svg" alt="Compl"></div><div class="TaskDel" id="TaskDel"><img src="../image/delete.svg" alt="Delete"></div><div class="OpenDop" id="OpenDop"><img src="../image/menu.svg" alt="Menu"></div></div><div class="DopTask" id="DopTask"></div></div>`;
             } else {
                 HtmlTask += `<div class="Task" id="Task"><div class="StanTask" id="StandTask"><div class="CheckPrir" id="CheckPrir"></div><div class="TaskText" id="taskText" data-title = '${row.TaskText}'>${row.TaskText}</div><div class="TaskComp" id="TaskComp"><img src="../image/checked.svg" alt="Compl"></div><div class="TaskDel" id="TaskDel"><img src="../image/delete.svg" alt="Delete"></div><div class="OpenDop" id="OpenDop"><img src="../image/menu.svg" alt="Menu"></div></div><div class="DopTask" id="DopTask"></div></div>`;
             }   
@@ -205,11 +209,15 @@ $('#AllTask').html(HtmlTask);
 function CreateFromTask(){
     let HtmlTask = '';
     ArrayFromTask.forEach((row) => {
-        if (row.ImportntTask === 1) {
-            HtmlTask += `<div class="Task" id="Task"><div class="StanTask" id="StandTask"><div class="CheckPrir" id="CheckPrir"><img src="../image/crown.svg" alt="Preoritet"></div><div class="TaskTextFrom" id="taskText" data-title = "${row.TaskText}">${row.TaskText}</div><div class="TaskDelFrom" id="TaskDel"><img src="../image/delete.svg" alt="Delete"></div><div class="OpenDop" id="OpenDop"><img src="../image/menu.svg" alt="Menu"></div></div><div class="DopTask" id="DopTask"></div></div>`;
+        if (row.OtchtTask == 1) {
+            if (row.ImportntTask === 1) {
+                HtmlTask += `<div class="Task" id="Task"><div class="StanTask" id="StandTask"><div class="CheckPrir" id="CheckPrir"><img src="${ArrayImgStatus[row.OtchtTask]}" alt="Preoritet"></div><div class="TaskTextFrom" id="taskText" data-title = "${row.TaskText}">${row.TaskText}</div><div class="TaskDelFrom" id="TaskDel"><img src="../image/delete.svg" alt="Delete"></div><div class="OpenDop" id="OpenDop"><img src="../image/menu.svg" alt="Menu"></div></div><div class="DopTask" id="DopTask"></div></div>`;
+            } else {
+                HtmlTask += `<div class="Task" id="Task"><div class="StanTask" id="StandTask"><div class="CheckPrir" id="CheckPrir"></div><div class="TaskTextFrom" id="taskText" data-title = "${row.TaskText}">${row.TaskText}</div><div class="TaskDelFrom" id="TaskDel"><img src="../image/delete.svg" alt="Delete"></div><div class="OpenDop" id="OpenDop"><img src="../image/menu.svg" alt="Menu"></div></div><div class="DopTask" id="DopTask"></div></div>`;
+            } 
         } else {
-            HtmlTask += `<div class="Task" id="Task"><div class="StanTask" id="StandTask"><div class="CheckPrir" id="CheckPrir"></div><div class="TaskTextFrom" id="taskText" data-title = "${row.TaskText}">${row.TaskText}</div><div class="TaskDelFrom" id="TaskDel"><img src="../image/delete.svg" alt="Delete"></div><div class="OpenDop" id="OpenDop"><img src="../image/menu.svg" alt="Menu"></div></div><div class="DopTask" id="DopTask"></div></div>`;
-        } 
+            HtmlTask += `<div class="Task" id="Task"><div class="StanTask" id="StandTask"><div class="CheckPrir" id="CheckPrir"><img src="${ArrayImgStatus[row.OtchtTask]}" alt="Preoritet"></div><div class="TaskTextFrom" id="taskText" data-title = "${row.TaskText}">${row.TaskText}</div><div class="TaskDelFrom" id="TaskDel"><img src="../image/delete.svg" alt="Delete"></div><div class="OpenDop" id="OpenDop"><img src="../image/menu.svg" alt="Menu"></div></div><div class="DopTask" id="DopTask"></div></div>`;
+        }
 });
 $('#AllTask').html(HtmlTask);
 }
@@ -280,86 +288,114 @@ $(document).on('click', '#OpenDop',function () {
     }
 }) 
 $(document).on('click', '#TaskDel',function () {
+    const connection = mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: 'rosq1921',
+        database: 'databaseforapptask'
+      });
+    
+      connection.connect(err => {
+        if (err) throw err;
+      });
     const ind = $(this).parents('#Task').index();
     console.log(ind);
     if ((NumberTask === 0) || (NumberTask === 1)) {
         if((AllArrayTask[NumberTask][ind].CientIDOut == IDUser) && (AllArrayTask[NumberTask][ind].CientIDIn !== IDUser)) {
+            sql = `DELETE FROM \`stacktask\` WHERE (\`TaskID\` = '${AllArrayTask[NumberTask][ind].TaskID}') and (\`CientIDIn\` = '${AllArrayTask[NumberTask][ind].CientIDIn}') and (\`CientIDOut\` = '${IDUser}')`;
+            console.log(sql);
+            connection.query(sql, (err, rows, fields) => {
+                if (err) throw err;
+                callback(rows);
+            });
+        } else{
             sql = `UPDATE \`stacktask\` SET \`OtchtTask\` = '3' WHERE (\`TaskID\` = '${AllArrayTask[NumberTask][ind].TaskID}') and (\`CientIDIn\` = '${IDUser}') and (\`CientIDOut\` = '${AllArrayTask[NumberTask][ind].CientIDOut}')`;
             console.log(sql);
-            // connection.query(sql, (err, rows, fields) => {
-            //     if (err) throw err;
-            //     callback(rows);
-            // });
-        } else{
-            sql = `DELETE FROM \`stacktask\` WHERE (\`TaskID\` = '${AllArrayTask[NumberTask][ind].TaskID}') and (\`CientIDIn\` = '${IDUser}') and (\`CientIDOut\` = '${AllArrayTask[NumberTask][ind].CientIDOut}')`;
-            console.log(sql);
-            // connection.query(sql, (err, rows, fields) => {
-            //     if (err) throw err;
-            //     callback(rows);
-            // });
+            connection.query(sql, (err, rows, fields) => {
+                if (err) throw err;
+                callback(rows);
+            });
         }
         if (NumberTask === 0) {
-            CreateArraysTasks();
+            console.log('OneTwoThree');
+            connection.end(function (err) {
+                CreateArraysTasks();
+            });
         } else {
-            CreatePriorTask();
+            connection.end(function (err) {
+                CreatePriorTask();
+            });
         }
     } else if (NumberTask === 3) {
         sql = `UPDATE \`stacktask\` SET \`OtchtTask\` = '3' WHERE (\`TaskID\` = '${AllArrayTask[NumberTask][ind].TaskID}') and (\`CientIDIn\` = '${IDUser}') and (\`CientIDOut\` = '${AllArrayTask[NumberTask][ind].CientIDOut}')`;
         console.log(sql);
-        // connection.query(sql, (err, rows, fields) => {
-        //     if (err) throw err;
-        //     callback(rows);
-        // });
+        connection.query(sql, (err, rows, fields) => {
+            if (err) throw err;
+            callback(rows);
+        });
         CreateTaskFor();
     } else if (NumberTask === 4 ){
         sql = `DELETE FROM \`stacktask\` WHERE (\`TaskID\` = '${AllArrayTask[NumberTask][ind].TaskID}') and (\`CientIDIn\` = '${AllArrayTask[NumberTask][ind].CientIDIn}') and (\`CientIDOut\` = '${IDUser}')`;
         console.log(sql);
-        // connection.query(sql, (err, rows, fields) => {
-        //     if (err) throw err;
-        //     callback(rows);
-        // });
+        connection.query(sql, (err, rows, fields) => {
+            if (err) throw err;
+            callback(rows);
+        });
         CreateFromTask();
     }
 });
 $(document).on('click', '#TaskComp',function () {
+    const connection = mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: 'rosq1921',
+        database: 'databaseforapptask'
+      });
+    
+      connection.connect(err => {
+        if (err) throw err;
+
+      });
     const ind = $(this).parents('#Task').index();
     console.log(ind);
     if ((NumberTask === 0) || (NumberTask === 1)) {
         if ((AllArrayTask[NumberTask][ind].CientIDOut === IDUser) && (AllArrayTask[NumberTask][ind].CientIDIn === IDUser)) {
             sql = `DELETE FROM \`stacktask\` WHERE (\`TaskID\` = '${AllArrayTask[NumberTask][ind].TaskID}') and (\`CientIDIn\` = '${IDUser}') and (\`CientIDOut\` = '${IDUser}')`;
             console.log(sql);
-            // connection.query(sql, (err, rows, fields) => {
-            //     if (err) throw err;
-            //     callback(rows);
-            // });
+            connection.query(sql, (err, rows, fields) => {
+                if (err) throw err;
+            });
         } else{
-            sql = `DELETE FROM \`stacktask\` WHERE (\`TaskID\` = '${AllArrayTask[NumberTask][ind].TaskID}') and (\`CientIDIn\` = '${IDUser}') and (\`CientIDOut\` = '${AllArrayTask[NumberTask][ind].CientIDOut}')`;
+            sql = `UPDATE \`stacktask\` SET \`OtchtTask\` = '2' WHERE (\`TaskID\` = '${AllArrayTask[NumberTask][ind].TaskID}') and (\`CientIDIn\` = '${IDUser}') and (\`CientIDOut\` = '${AllArrayTask[NumberTask][ind].CientIDOut}')`;
             console.log(sql);
-            // connection.query(sql, (err, rows, fields) => {
-            //     if (err) throw err;
-            //     callback(rows);
-            // });
+            connection.query(sql, (err, rows, fields) => {
+                if (err) throw err;
+            });
         }
+        console.log(NumberTask);
         if (NumberTask === 0) {
-            CreateArraysTasks();
+            console.log('OneTwoThree');
+            connection.end(function (err) {
+                CreateArraysTasks();
+            });
         } else {
-            CreatePriorTask();
+            connection.end(function (err) {
+                CreatePriorTask();
+            });
         }
     } else if (NumberTask === 2) {
         sql = `DELETE FROM \`stacktask\` WHERE (\`TaskID\` = '${AllArrayTask[NumberTask][ind].TaskID}') and (\`CientIDIn\` = '${IDUser}') and (\`CientIDOut\` = '${IDUser}')`;
         console.log(sql);
-        // connection.query(sql, (err, rows, fields) => {
-        //     if (err) throw err;
-        //     callback(rows);
-        // });
+        connection.query(sql, (err, rows, fields) => {
+            if (err) throw err;
+        });
         CreateMyTask();
     } else if (NumberTask === 3) {
         sql = `UPDATE \`stacktask\` SET \`OtchtTask\` = '3' WHERE (\`TaskID\` = '${AllArrayTask[NumberTask][ind].TaskID}') and (\`CientIDIn\` = '${IDUser}') and (\`CientIDOut\` = '${AllArrayTask[NumberTask][ind].CientIDOut}')`;
         console.log(sql);
-        // connection.query(sql, (err, rows, fields) => {
-        //     if (err) throw err;
-        //     callback(rows);
-        // });
+        connection.query(sql, (err, rows, fields) => {
+            if (err) throw err;
+        });
         CreateTaskFor();
     }
     console.log('Hello');
@@ -368,11 +404,11 @@ $(document).on('click', '#NewTask',function () {
 const mainWindowThird = new BrowserWindow({
     width: 600,
     height: 300,
-    // minHeight:300,
-    // maxHeight:300,
-    // minWidth:600,
-    // maxWidth:600,
-    // frame: false,
+    minHeight:300,
+    maxHeight:300,
+    minWidth:600,
+    maxWidth:600,
+    frame: false,
   });
   mainWindowThird.loadURL(
     url.format({ 
@@ -382,94 +418,3 @@ const mainWindowThird = new BrowserWindow({
     })
   );
 });
-
-// document.getElementById('OpenDop').addEventListener('click',function() {
-//     console.log(flag);
-//     if (flag) {
-//         let str = `<div class="From" id="From">From:</div><div class="NameFrom" id="NameFrom">Boris Cvelodubov</div><div class="ExDate" id="ExDate">ExDate:</div><div class="DataEnd" id="DataEnd">20.03.2019</div>`;
-//         let doc = document.getElementById('DopTask');
-//         doc.innerHTML = str;
-//         doc.style.display = 'flex';
-//         doc.style.height = '50%';
-//         doc.style.backgroundColor = '#ffffff';
-//         doc.style.color = '#000';
-//         doc.style.fontSize = '1.2em';
-//         let task = document.getElementById('Task');
-//         flag = false;
-//     } else {
-//         let doc = document.getElementById('DopTask');
-//         doc.innerHTML = '';
-//         doc.style.display = '';
-//         doc.style.height = '';
-//         doc.style.backgroundColor = '';
-//         doc.style.color = '';
-//         doc.style.fontSize = '';
-//         flag = true
-//     }
-// });
-// ArrayAllTask.forEach((row) => {
-//     let task = document.createElement('div');
-//     task.className = 'Task';
-//     task.id = 'Task';
-//     document.getElementById('AllTask').appendChild(task);
-//     let StanTask = document.createElement('div');
-//     StanTask.className = 'StanTask';
-//     StanTask.id = 'StanTask';
-//     $('Task:last-child').appendChild(StanTask);
-//     let DopTask = document.createElement('div');
-//     DopTask.className = 'DopTask';
-//     DopTask.id = 'DopTask';
-//     $('Task:last-child').appendChild(DopTask);
-//     if (row.ImportntTask === 1) {
-//         let CheckPrir = document.createElement('div');
-//         CheckPrir.className = 'CheckPrir';
-//         CheckPrir.id = 'CheckPrir'
-//         CheckPrir.innerHTML = '<img src="../image/crown.svg" alt="Preoritet">';
-//         $('#Task:last-child #DopTask').appendChild(CheckPrir);
-//         let TaskText = document.createElement('div');
-//         TaskText.className = 'TaskText';
-//         TaskText.id = 'TaskText'
-//         TaskText.innerHTML = ArrayAllTask.TaskText;
-//         $('#Task:last-child #DopTask').appendChild(TaskText);
-//         let TaskComp = document.createElement('div');
-//         TaskComp.className = 'TaskComp';
-//         TaskComp.id = 'TaskComp'
-//         TaskComp.innerHTML = '<img src="../image/checked.svg" alt="Compl">';
-//         $('#Task:last-child #DopTask').appendChild(TaskComp);
-//         let TaskDel = document.createElement('div');
-//         TaskDel.className = 'TaskDel';
-//         TaskDel.id = 'TaskDel'
-//         TaskDel.innerHTML = '<img src="../image/delete.svg" alt="Delete">';
-//         $('#Task:last-child #DopTask').appendChild(TaskDel);
-//         let OpenDop = document.createElement('div');
-//         OpenDop.className = 'OpenDop';
-//         OpenDop.id = 'OpenDop'
-//         OpenDop.innerHTML = '<img src="../image/menu.svg" alt="Menu">';
-//         $('#Task:last-child #DopTask').appendChild(OpenDop);
-//     } else {
-//         let CheckPrir = document.createElement('div');
-//         CheckPrir.className = 'CheckPrir';
-//         CheckPrir.id = 'CheckPrir'
-//         $('#Task:last-child #DopTask').appendChild(CheckPrir);
-//         let TaskText = document.createElement('div');
-//         TaskText.className = 'TaskText';
-//         TaskText.id = 'TaskText'
-//         TaskText.innerHTML = ArrayAllTask.TaskText;
-//         $('#Task:last-child #DopTask').appendChild(TaskText);
-//         let TaskComp = document.createElement('div');
-//         TaskComp.className = 'TaskComp';
-//         TaskComp.id = 'TaskComp'
-//         TaskComp.innerHTML = '<img src="../image/checked.svg" alt="Compl">';
-//         $('#Task:last-child #DopTask').appendChild(TaskComp);
-//         let TaskDel = document.createElement('div');
-//         TaskDel.className = 'TaskDel';
-//         TaskDel.id = 'TaskDel'
-//         TaskDel.innerHTML = '<img src="../image/delete.svg" alt="Delete">';
-//         $('#Task:last-child #DopTask').appendChild(TaskDel);
-//         let OpenDop = document.createElement('div');
-//         OpenDop.className = 'OpenDop';
-//         OpenDop.id = 'OpenDop'
-//         OpenDop.innerHTML = '<img src="../image/menu.svg" alt="Menu">';
-//         $('#Task:last-child #DopTask').appendChild(OpenDop);
-//     }
-// });

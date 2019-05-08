@@ -5,7 +5,7 @@ let ArrayPeople = [];
 let ArrayPeopleList = [];
 let MaxTaskNumber;
 let Checked = false;
-let Prior = 1;
+let Prior = 2;
 function DateFull() {
   let DateNow = new Date();
   let Month =DateNow.getMonth() + 1 + "";
@@ -60,7 +60,6 @@ GetAllPeople((rows) => {
   });
 });
   $(document).on('click', '#PeopleButton',function () {
-  console.log(ArrayPeople);
   let HtmlListPeople = '';
   let ArraySearch = ArrayPeople.filter((row) => {
     return row.Login == $('#LoginText').val();
@@ -72,7 +71,6 @@ GetAllPeople((rows) => {
     $("#ErroPeopleSearch").html("");
     $('#LoginText').val("");
   }
-  console.log(ArrayPeopleList);
   ArrayPeopleList.forEach(row => {
     HtmlListPeople += `<div class="People" id="People"><div class="PeopleName" id="PeopleName">${row.FirstName} ${row.LastName}</div><div class="DeletePeople" id="DeletePeople"><img src="../image/x-button.svg" alt="delete"></div></div>`;
   });
@@ -96,14 +94,19 @@ $('#ButtonAcept').on('click', () => {
           if (err) throw err;
         });
         setTimeout(function() {
+          console.log(ArrayPeopleList);
         ArrayPeopleList.forEach(element => {
-          let SQLInsertStack = `INSERT INTO \`databaseforapptask\`.\`stacktask\` (\`CientIDIn\`, \`CientIDOut\`, \`TaskID\`, \`DataStart\`, \`DataEnd\`, \`ImportntTask\`, \`OtchtTask\`) VALUES ('${localStorage.getItem('MaxID')}', '${element.IDClient}', (Select TaskID from task where TaskText = "${$('#TextTaskName').val()}"), '${DateFull()}', '${$('#TaskExDate').val()}', '${Prior}', '1')`;
+          let SQLInsertStack = `INSERT INTO \`databaseforapptask\`.\`stacktask\` (\`CientIDIn\`, \`CientIDOut\`, \`TaskID\`, \`DataStart\`, \`DataEnd\`, \`ImportntTask\`, \`OtchtTask\`) VALUES ('${element.IDClient}', '${localStorage.getItem('MaxID')}', (Select TaskID from task where TaskText = "${$('#TextTaskName').val()}"), '${DateFull()}', '${$('#TaskExDate').val()}', '${Prior}', '1')`;
           connection.query(SQLInsertStack, (err, rows, fields) => {
             if (err) throw err;
           });
           console.log(SQLInsertStack);
         });
-      },300);
+        connection.end(function(err) {
+          const win = remote.getCurrentWindow();
+          win.close();
+        });
+      },200);
       } else {
         $('TextTaskName').val("Empty");
       }
@@ -122,13 +125,17 @@ $('#ButtonAcept').on('click', () => {
         if (err) throw err;
       });
       console.log(SQLInsertStack);
+      connection.end(function(err) {
+        const win = remote.getCurrentWindow();
+        win.close();
+      });
     } else {
       $('TextTaskName').val("Empty");
     }
   }
 });
 $('#switchProprety').on('click', () => {
-  Prior = $("#switchProprety").prop("checked") ? 2 : 1;
+  Prior = $("#switchProprety").prop("checked") ? 1 : 2;
   console.log(Prior);
 });
 $('#ButtonCencel').on('click', () => {
