@@ -14,16 +14,31 @@
         <div class="TaskText" id="TaskText">
             <input type="text" id="TextTaskName">
         </div>
-        <div class="SelectParametr">
-            <div class="TaskSwitch">
-                Task From Me
+        <div class="TaskParametr">
+            <div class="SelectParametr">
+                <div class="TaskSwitch">
+                    Task From Me
+                </div>
+                <div class="switch">
+                    <input type="checkbox" id="switch" hidden>
+                    <label for="switch"></label>
+                </div>
+                <div class="TaskSwitch">
+                    My Task
+                </div>
             </div>
-            <div class="switch">
-                <input type="checkbox" id="switch" hidden>
-                <label for="switch"></label>
+            <div class="PrioretyParametr">
+                <div class="switch">
+                    <input type="checkbox" id="switchProprety" hidden>
+                    <label for="switchProprety"></label>
+                </div>
+                <div class="TaskSwitch">
+                        Priorety
+                    </div>
             </div>
-            <div class="TaskSwitch">
-                My Task
+            <div class="TaskDate" id="TaskDate">
+                <div class="DateName">Date Ex:</div>
+                <input type="date" name="date" id="TaskExDate" value="2019-03-01">
             </div>
         </div>
         <div class="AddPeople">
@@ -32,7 +47,7 @@
                     Login:
                 </div>
                 <div class="PeopleText" id="PeopleText">
-                    <input type="text"  id="LoginText">
+                    <input type="text" id="LoginText">
                 </div>
                 <div class="PeopleButton" id="PeopleButton">
                     <img src="../image/add-user.svg" alt="AddedUser">

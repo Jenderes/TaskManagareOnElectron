@@ -366,12 +366,12 @@ $(document).on('click', '#TaskComp',function () {
 });
 $(document).on('click', '#NewTask',function () {
 const mainWindowThird = new BrowserWindow({
-    width: 550,
+    width: 600,
     height: 300,
     // minHeight:300,
     // maxHeight:300,
-    // minWidth:550,
-    // maxWidth:550,
+    // minWidth:600,
+    // maxWidth:600,
     // frame: false,
   });
   mainWindowThird.loadURL(

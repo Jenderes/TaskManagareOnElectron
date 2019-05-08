@@ -61,8 +61,24 @@ img {
 }
 .SelectParametr {
   display: flex;
+  border-right: 1px solid #0bc6ff;
+}
+.PrioretyParametr {
+  display: flex;
+  margin-left: 4px;
+  border-right: 1px solid #0bc6ff;
+}
+.TaskDate {
+  display: flex;
+  margin-left: 4px;
+}
+.TaskParametr {
+  display: flex;
   width: 100%;
   margin-top: 20px;
+}
+.DateName {
+  margin-right: 10px;
 }
 .TaskSwitch {
   margin-right: 10px;
